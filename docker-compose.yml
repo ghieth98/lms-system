@@ -1,0 +1,23 @@
+services:
+  dev-db:
+    image: postgres:13-alpine
+    ports:
+      - 5434:5432
+    environment:
+      POSTGRES_USER: ghieth
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: courses
+    networks:
+      - nest-curd-api
+  test-db:
+    image: postgres:13-alpine
+    ports:
+      - 5435:5432
+    environment:
+      POSTGRES_USER: ghieth
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: courses
+    networks:
+      - nest-curd-api
+networks:
+  nest-curd-api:
