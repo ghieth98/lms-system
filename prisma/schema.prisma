@@ -12,3 +12,111 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updateAt  DateTime @updatedAt
+
+  name        String
+  email       String       @unique
+  password    String
+  role        Role
+  enrollments Enrollment[]
+  progress    Progress[]
+}
+
+model Course {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  title       String
+  description String
+  modules     Module[]
+  quizes      Quiz[]
+  enrollments Enrollment[]
+}
+
+model Module {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  title    String
+  course   Course   @relation(fields: [courseId], references: [id])
+  courseId Int
+  lessons  Lesson[]
+}
+
+model Lesson {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  title    String
+  content  String
+  module   Module     @relation(fields: [moduleId], references: [id])
+  moduleId Int
+  progress Progress[]
+}
+
+model Quiz {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  title     String
+  course    Course     @relation(fields: [courseId], references: [id])
+  courseId  Int
+  questions Question[]
+}
+
+model Question {
+  id      Int      @id @default(autoincrement())
+  content String
+  quiz    Quiz     @relation(fields: [quizId], references: [id])
+  quizId  Int
+  answers Answer[]
+}
+
+model Answer {
+  id         Int      @id @default(autoincrement())
+  content    String
+  question   Question @relation(fields: [questionId], references: [id])
+  questionId Int
+  isCorrect  Boolean
+}
+
+model Enrollment {
+  id         Int      @id @default(autoincrement())
+  user       User     @relation(fields: [userId], references: [id])
+  userId     Int
+  course     Course   @relation(fields: [courseId], references: [id])
+  courseId   Int
+  enrolledAt DateTime @default(now())
+}
+
+model Progress {
+  updatedAt DateTime @updatedAt
+
+  user     User   @relation(fields: [userId], references: [id])
+  lesson   Lesson @relation(fields: [lessonId], references: [id])
+  lessonId Int
+  status   Status
+  userId   Int
+
+  @@id([userId, lessonId])
+}
+
+enum Role {
+  student
+  instructor
+  admin
+}
+
+enum Status {
+  not_started
+  in_progress
+  completed
+}
