@@ -21,9 +21,11 @@ model User {
   name        String
   email       String       @unique
   password    String
-  role        Role
+  role        Role         @default(student)
   enrollments Enrollment[]
   progress    Progress[]
+
+  @@map("users")
 }
 
 model Course {
@@ -36,6 +38,8 @@ model Course {
   modules     Module[]
   quizes      Quiz[]
   enrollments Enrollment[]
+
+  @@map("courses")
 }
 
 model Module {
@@ -47,6 +51,8 @@ model Module {
   course   Course   @relation(fields: [courseId], references: [id])
   courseId Int
   lessons  Lesson[]
+
+  @@map("modules")
 }
 
 model Lesson {
@@ -59,6 +65,8 @@ model Lesson {
   module   Module     @relation(fields: [moduleId], references: [id])
   moduleId Int
   progress Progress[]
+
+  @@map("lessons")
 }
 
 model Quiz {
@@ -70,6 +78,8 @@ model Quiz {
   course    Course     @relation(fields: [courseId], references: [id])
   courseId  Int
   questions Question[]
+
+  @@map("quizes")
 }
 
 model Question {
@@ -78,6 +88,8 @@ model Question {
   quiz    Quiz     @relation(fields: [quizId], references: [id])
   quizId  Int
   answers Answer[]
+
+  @@map("questions")
 }
 
 model Answer {
@@ -86,6 +98,8 @@ model Answer {
   question   Question @relation(fields: [questionId], references: [id])
   questionId Int
   isCorrect  Boolean
+
+  @@map("answers")
 }
 
 model Enrollment {
@@ -95,6 +109,8 @@ model Enrollment {
   course     Course   @relation(fields: [courseId], references: [id])
   courseId   Int
   enrolledAt DateTime @default(now())
+
+  @@map("enorllments")
 }
 
 model Progress {
@@ -103,10 +119,11 @@ model Progress {
   user     User   @relation(fields: [userId], references: [id])
   lesson   Lesson @relation(fields: [lessonId], references: [id])
   lessonId Int
-  status   Status
+  status   Status @default(not_started)
   userId   Int
 
   @@id([userId, lessonId])
+  @@map("progress")
 }
 
 enum Role {
