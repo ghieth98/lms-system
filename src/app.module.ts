@@ -8,6 +8,7 @@ import { AccessControlModule, ACGuard } from 'nest-access-control';
 import { RBAC_POLICY } from './auth/rbac-policy';
 import { APP_GUARD } from '@nestjs/core';
 import { CourseModule } from './course/course.module';
+import { ModuleModule } from './module/module.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { CourseModule } from './course/course.module';
     AuthModule,
     UserModule,
     CourseModule,
+    ModuleModule,
   ],
   controllers: [],
   providers: [
