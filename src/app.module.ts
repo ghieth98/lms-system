@@ -9,6 +9,7 @@ import { RBAC_POLICY } from './auth/rbac-policy';
 import { APP_GUARD } from '@nestjs/core';
 import { CourseModule } from './course/course.module';
 import { ModuleModule } from './module/module.module';
+import { LessonModule } from './lesson/lesson.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { ModuleModule } from './module/module.module';
     UserModule,
     CourseModule,
     ModuleModule,
+    LessonModule,
   ],
   controllers: [],
   providers: [

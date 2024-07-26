@@ -1,11 +1,19 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseIntPipe,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { ModuleService } from './module.service';
 import { CreateModuleDto, UpdateModuleDto } from './dto';
 
 @Controller('/course/:courseId/module')
 export class ModuleController {
-  constructor(private readonly moduleService: ModuleService) {
-  }
+  constructor(private readonly moduleService: ModuleService) {}
 
   @Post()
   create(
@@ -38,7 +46,10 @@ export class ModuleController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string, @Param('courseId', ParseIntPipe) courseId: number) {
+  remove(
+    @Param('id') id: string,
+    @Param('courseId', ParseIntPipe) courseId: number,
+  ) {
     return this.moduleService.remove(+id, courseId);
   }
 }

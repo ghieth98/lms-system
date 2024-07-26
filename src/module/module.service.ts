@@ -4,8 +4,7 @@ import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class ModuleService {
-  constructor(private prisma: PrismaService) {
-  }
+  constructor(private prisma: PrismaService) {}
 
   async create(courseId: number, createModuleDto: CreateModuleDto) {
     // Check if the course exists
@@ -90,7 +89,8 @@ export class ModuleService {
       where: { id: id },
     });
     //   Check that the module exists and that it belongs to the correct course
-    if (!module || module.courseId !== courseId) throw new NotFoundException(`Could not find the module for this course`);
+    if (!module || module.courseId !== courseId)
+      throw new NotFoundException(`Could not find the module for this course`);
     //   delete the module
     await this.prisma.module.delete({
       where: { id: id, courseId: courseId },
